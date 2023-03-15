@@ -17,7 +17,7 @@ export default class Player {
         this.damaged = 0;
 
         this.lastMouseButton = 0;
-        this.shooting = new Shooting({app, player: this, shootSpeed: 200})
+        this.shooting = new Shooting({app, player: this, shootSpeed: 300})
 
         this.damageUI = ()=>{}
     }
@@ -25,7 +25,7 @@ export default class Player {
     update() {
 
 
-        const mouse = this.app.renderer.plugins.interaction.mouse;
+        const mouse = this.app.renderer.plugins.C.mouse;
 
         const cursorPosition = mouse.global;
         let y = cursorPosition.y - this.pixi.position.y,

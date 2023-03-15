@@ -9,7 +9,11 @@ export default class Shooting {
         this.bullets = [];
         this.bulletsRadius = 8;
         this.maxBullets = 300;
-        this.shootSpeed = shootSpeed ? shootSpeed : 100
+        this.shootSpeed = shootSpeed ? shootSpeed : 100;
+
+
+        this.shooting = false;
+        this.timerIsStarted = false;
     }
 
 
@@ -54,15 +58,24 @@ export default class Shooting {
         this.bullets.forEach(b => b.position.set(b.position.x + b.velocity.x, b.position.y + b.velocity.y));
     }
 
-    set shoot(Shooting) {
+    set shoot(userInput) {
+        this.shooting = userInput;
+        if (userInput && !this.timerIsStarted) {
 
-        if (Shooting) {
+
             this.fire();
-            this.interval = setInterval(() => this.fire(), this.shootSpeed);
+            this.interval = setInterval(() => {
+                if (!this.shooting) {
+                    
+                    clearInterval(this.interval);
+                    this.timerIsStarted = false;
+                    return;
+                }
+                this.fire()
+            }, this.shootSpeed);
+            this.timerIsStarted = true;
 
         }
-        else {
-            clearInterval(this.interval);
-        }
+
     }
 }
