@@ -28,26 +28,51 @@ export default class Tick extends Lib {
 
     oneTick(data) {
 
-        this.teams.forEach(team => {
-            team.members.forEach(member => {
-                if (!member.shape.isRendered) {
-                    //this.printLog("Element " + member.name + " add to renderer")
-                    this.app.stage.addChild(member.shape);
-                    member.shape.isRendered = true;
-                    member.prepareScripts({})
-                }
-                member.tick({ cursorPosition: this.app.renderer.plugins.interaction.mouse.global })
+        this.forEachUnit((team, member)=>{
+            if (!member._isRendered()) {
+                //this.printLog("Element " + member.name + " add to renderer")
+                this.app.stage.addChild(member._getRenderObj());
+                member.prepareScripts({})
+            }
 
 
-                if (member.status.dead) {
-                    //this.printLog("Element " + member.name + " del from renderer")
-                    this.app.stage.removeChild(member.shape);
-                    team.deleteMember({ member });
-                }
-            })
+            this.inRadius(member)
+
+
+            member.tick({ cursorPosition: this.app.renderer.plugins.interaction.mouse.global })
+
+
+            if (member.status.dead) {
+                //this.printLog("Element " + member.name + " del from renderer")
+                member._stopRender()
+                this.app.stage.removeChild(member._getRenderObj());
+                team.deleteMember({ member });
+            }
         })
 
 
 
+    }
+
+    forEachUnit(func) {
+        this.teams.forEach(team => {
+            team.members.forEach(member => {
+                func(team, member)
+            })
+        })
+    }
+
+    inRadius(unit) {
+        this.forEachUnit((team, anotherUnit)=>{
+            if (unit === anotherUnit) return
+            let x1 = Math.abs(unit.position.x - anotherUnit.position.x),
+                y1 = Math.abs(unit.position.y - anotherUnit.position.y);
+
+                
+            if (Math.sqrt(x1*x1 + y1*y1) < (unit.collisionRadius + anotherUnit.collisionRadius)) {
+                
+                unit.collisionFx(anotherUnit)
+            }
+        })
     }
 }

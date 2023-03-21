@@ -6,6 +6,7 @@ import Spawner from "./Spawner.js";
 export default class Team extends Lib {
     constructor({ name }) {
         super({ errName: "Team " + name });
+        this.color;
         this.name = name;
         this.spawners = []
         this.members = []
@@ -34,7 +35,9 @@ export default class Team extends Lib {
 
 
     }
-
+    setColor({color}) {
+        this.color = color;
+    }
 
     addSpawner({ spawner }) {
 

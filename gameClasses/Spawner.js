@@ -78,6 +78,7 @@ export default class Spawner extends Lib {
                     const areaId = Lib.int(this.areas.length);
                     member.position.x = Lib.intRange(this.areas[areaId].x.min, this.areas[areaId].x.max);
                     member.position.y = Lib.intRange(this.areas[areaId].y.min, this.areas[areaId].y.max);
+
                     this.team.addMember({ member })
                     
                 });

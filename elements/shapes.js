@@ -10,9 +10,10 @@ export class Shared {
 export default class gBox extends PIXI.Sprite {
     constructor(size, textureName) { 
         super(Shared.resources[textureName].texture);
-        this.anchor.set(0.5);
+        //this.anchor.set(0.5);
         this.position.set(0,0);
         this.width = this.height = size;
+        this.collisionRadius = (size + size/Math.sqrt(2))/2
         this.rotation = 0;
         this.isRendered = false;
 
